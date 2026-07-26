@@ -1,0 +1,146 @@
+=~=~=~=~=~=~=~=~=~=~=~= PuTTY log 2026.07.03 18:08:07 =~=~=~=~=~=~=~=~=~=~=~=
+en
+sw118#ter le 0
+sw118#show run
+Building configuration...
+
+Current configuration : 2169 bytes
+!
+! Last configuration change at 13:09:10 UTC Fri Jul 3 2026
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+no service password-encryption
+service compress-config
+!
+hostname sw118
+!
+boot-start-marker
+boot-end-marker
+!
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode pvst
+spanning-tree extend system-id
+spanning-tree vlan 20 priority 24576
+!
+!
+track 10 interface Ethernet1/2 line-protocol
+!
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel10
+ description ISL-TRUNK
+ switchport trunk allowed vlan 10,20,100
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+!
+interface Ethernet0/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ spanning-tree portfast edge
+!
+interface Ethernet0/1
+ switchport access vlan 20
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface Ethernet0/2
+ description LAC Port-Channel
+ switchport trunk allowed vlan 10,20,100
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 10 mode active
+!
+interface Ethernet0/3
+ description LAC Port-Channel
+ switchport trunk allowed vlan 10,20,100
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ channel-group 10 mode active
+!
+interface Ethernet1/0
+!
+interface Ethernet1/1
+!
+interface Ethernet1/2
+ switchport access vlan 100
+ switchport mode access
+ spanning-tree portfast edge
+!
+interface Ethernet1/3
+!
+interface Ethernet2/0
+!
+interface Ethernet2/1
+!
+interface Ethernet2/2
+!
+interface Ethernet2/3
+!
+interface Vlan20
+ description USER_GATEWAY
+ ip address 192.168.20.2 255.255.255.0
+ standby version 2
+ standby 20 ip 192.168.20.1
+ standby 20 priority 110
+ standby 20 preempt delay minimum 30
+ standby 20 name HSRP_VLAN20
+ standby 20 track 10 decrement 30
+!
+interface Vlan100
+ description UPLINK_TO_PALO_ALTO
+ ip address 10.1.1.2 255.255.255.0
+!
+ip forward-protocol nd
+!
+ip http server
+!
+ip route 0.0.0.0 0.0.0.0 10.1.1.254
+ip ssh server algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+ip ssh client algorithm encryption aes128-ctr aes192-ctr aes256-ctr
+!
+!
+!
+!
+!
+control-plane
+!
+!
+line con 0
+ logging synchronous
+line aux 0
+line vty 0 4
+ login
+!
+!
+!
+end
+
+sw118#

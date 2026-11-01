@@ -1,4 +1,4 @@
-# Splunk Distributed SIEM — Implementation & Security Detection POC
+# Splunk Distributed SIEM — Implementation & Security Detection
 
 **Corvit Networks | Cybersecurity Engineering Portfolio**
 
@@ -218,7 +218,7 @@ The source describes saving this search as an alert triggered when results are g
 
 ## Evidence
 
-These images were extracted from the supplied implementation document and are included as **original POC evidence**, not newly simulated results.
+These images were extracted from the supplied implementation document and are included as **original POC evidence**, not newly simulated results and are also attached in the files above directory.
 
 ### Indexer peers online
 

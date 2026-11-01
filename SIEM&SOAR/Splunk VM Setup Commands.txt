@@ -1,0 +1,65 @@
+sudo nano /etc/hosts
+##################
+127.0.0.1       localhost
+127.0.1.1       splunk-idx-02
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+# ===== Splunk Lab Hosts =====
+#If DNS is not avaialable ... 
+192.168.1.10    splunk-master
+192.168.1.11    splunk-idx-01
+192.168.1.12    splunk-idx-02
+192.168.1.20    splunk-sh-01
+192.168.1.30    splunk-ds-01
+192.168.1.50    ubuntu-target
+192.168.1.35    splunk-rsyslog01
+
+=============================
+
+#If its KVM emulator, use dhcpd to get the ip addresses and then use putty to access temp ip and paste the below EOF script with own manual IPs.
+sudo bash -c 'cat > /etc/netplan/01-netcfg.yaml <<EOF
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0:
+      dhcp4: no
+      addresses:
+        - 192.168.1.35/24
+      gateway4: 192.168.1.1
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4]
+EOF'
+
+=================================
+
+sudo netplan apply
+
+ip a show eth0
+ip -br a
+
+ping -c 3 192.168.1.1
+ping -c 3 8.8.8.8
+
+
+sudo hostnamectl set-hostname splunk-rsyslog01
+
+sudo sed -i 's/preserve_hostname: false/preserve_hostname: true/' /etc/cloud/cloud.cfg
+
+===============================================
+
+sudo apt update
+sudo apt install -y openssh-server
+sudo systemctl enable --now ssh
+sudo systemctl status ssh
+
+===============================
+
+cd /tmp
+wget -O splunk-10.0.2-e2d18b4767e9-linux-amd64.deb "https://download.splunk.com/products/splunk/releases/10.0.2/linux/splunk-10.0.2-e2d18b4767e9-linux-amd64.deb"
+file splunk-10.0.2-e2d18b4767e9-linux-amd64.deb
+sudo dpkg -i splunk-10.0.2-e2d18b4767e9-linux-amd64.deb
+
